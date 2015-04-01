@@ -34,6 +34,7 @@ import javax.swing.JPanel;
 public class Recursion extends JPanel {
 
     Point p0, p1;
+    int maxLevel = 15;
 
     public Recursion() {
         Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
@@ -51,14 +52,17 @@ public class Recursion extends JPanel {
 
     private void draw(Point p0, Point p1, int level, Graphics g1) {
         Graphics2D g = (Graphics2D) g1;
-        g.setStroke(new BasicStroke(Math.max(0.5f,18 - level)/6f));
-        drawLine(g, p0, p1, level);
-//        System.out.println("distance: " + p0.distance(p1));
-        if (level >= 17) {
-            return;
-        }
-        if (level == 17) {
+        if (level == maxLevel) {
             g.setColor(Color.green);
+        } else {
+            g.setColor(Color.black);
+        }
+        g.setStroke(new BasicStroke(Math.max(0.5f, maxLevel - level) / 6f));
+        drawLine(g, p0, p1, level);
+
+//        System.out.println("distance: " + p0.distance(p1));
+        if (level >= maxLevel) {
+            return;
         }
 
         Point a = P(p0, p1, 1 + Math.random(), 0.4 + 0.1 * (Math.random() - 0.6));
@@ -86,8 +90,7 @@ public class Recursion extends JPanel {
         int dx = p1.x - p0.x;
         int dy = p1.y - p0.y;
 
-        return new Point((int) (p0.x + u * dx - v * dy),
-                (int) (p0.y + u * dy + v * dx));
+        return new Point((int) ((p0.x + u * dx - v * dy)), (int) ((p0.y + u * dy + v * dx)));
     }
 
     @Override
