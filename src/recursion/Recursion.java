@@ -24,6 +24,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.awt.geom.Point2D;
 import javax.swing.JPanel;
 
 /**
@@ -35,45 +36,49 @@ public class Recursion extends JPanel {
     Point p0, p1;
 
     public Recursion() {
-//        Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
-//        setPreferredSize(new Dimension(res.width, res.height - 79));
-        setPreferredSize(new Dimension(700, 700));
-//        setSize(res.width, res.height - 79);
-        setSize(700, 700);
+        Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
+        setPreferredSize(new Dimension(res.width, res.height - 79));
+//        setPreferredSize(new Dimension(700, 700));
+        setSize(res.width, res.height - 79);
+//        setSize(700, 700);
         setDoubleBuffered(true);
     }
 
     void run() {
-        p0 = new Point(getWidth() / 2, getHeight() - 50);
-        p1 = new Point(getWidth() / 2, getHeight() / 2 + 50);
+        p0 = new Point(getWidth() / 2, getHeight() + 10);
+        p1 = new Point(getWidth() / 2, getHeight() / 2 + 350);
     }
 
-    private void draw(Point p0, Point p1, int level, Graphics g) {
-        drawLine(g, p0, p1);
-        System.out.println("distance: " + p0.distance(p1));
-        if (level >= 7) {
+    private void draw(Point p0, Point p1, int level, Graphics g1) {
+        Graphics2D g = (Graphics2D) g1;
+        g.setStroke(new BasicStroke(Math.max(0.5f,18 - level)/6f));
+        drawLine(g, p0, p1, level);
+//        System.out.println("distance: " + p0.distance(p1));
+        if (level >= 17) {
             return;
         }
+        if (level == 17) {
+            g.setColor(Color.green);
+        }
 
-        Point a = P(p0, p1, 1 + Math.random(), 0.3 + 0.1*(Math.random() - 0.5));
-        g.setColor(Color.blue);
-        g.drawOval(a.x - 1, a.y - 1, 2, 2);
+        Point a = P(p0, p1, 1 + Math.random(), 0.4 + 0.1 * (Math.random() - 0.6));
+//        g.setColor(Color.blue);
+//        g.drawOval(a.x - 1, a.y - 1, 2, 2);
+//        g.setColor(Color.black);
         draw(p1, a, level + 1, g);
 
-        Point b = P(p0, p1, 1 + Math.random(), -0.3 + 0.1*(Math.random() - 0.5));
+        Point b = P(p0, p1, 1 + Math.random(), -0.4 + 0.1 * (Math.random() - 0.6));
 //        Point c = P(p0, p1, 0.5, -0.4);
-        g.setColor(Color.red);
-        g.drawOval(b.x - 1, b.y - 1, 2, 2);
-        g.setColor(Color.black);
+//        g.setColor(Color.red);
+//        g.drawOval(b.x - 1, b.y - 1, 2, 2);
+//        g.setColor(Color.black);
         draw(p1, b, level + 1, g);
 
-        Point c = P(p0, p1, 1.1 + Math.random(), 0.1*(Math.random() - 0.5));
-        g.setColor(Color.green);
-        g.drawOval(c.x - 1, c.y - 1, 2, 2);
-        g.setColor(Color.black);
-        draw(p1, c, level + 1, g);
-
-
+//        Point c = P(p0, p1, 1.1 + Math.random(), 0.1*(Math.random() - 0.5));
+//        g.setColor(Color.green);
+//        g.drawOval(c.x - 1, c.y - 1, 2, 2);
+//        g.setColor(Color.black);
+//        draw(p1, c, level + 1, g);
 //        draw(a, c, g);
     }
 
@@ -95,14 +100,31 @@ public class Recursion extends JPanel {
 //        g2.drawLine(getWidth() / 2, getHeight() / 2, getWidth() / 2, getHeight() / 2 + -100);
         draw(p0, p1, 0, g);
 //        repaint();
-//        try {
-//            Thread.sleep(10);
-//        } catch (Exception e) {
-//        }
     }
 
-    private void drawLine(Graphics g, Point p0, Point p1) {
+    private void drawLine(Graphics g, Point p0, Point p1, int level) {
+//        if (level == 0) {
+//            g.setColor(Color.black);
+//            g.drawLine(p0.x, p0.y, p1.x, p1.y);
+//            g.drawLine(p0.x + 1, p0.y + 1, p1.x + 1, p1.y + 1);
+//            g.drawLine(p0.x + 2, p0.y + 2, p1.x + 2, p1.y + 2);
+//            g.drawLine(p0.x - 1, p0.y - 1, p1.x - 1, p1.y - 1);
+//            g.drawLine(p0.x - 2, p0.y - 2, p1.x - 2, p1.y - 2);
+//            g.drawLine(p0.x + 3, p0.y + 3, p1.x + 3, p1.y + 3);
+//            g.drawLine(p0.x - 3, p0.y - 3, p1.x - 3, p1.y - 3);
+//        } else if (level == 1) {
+//            g.drawLine(p0.x, p0.y, p1.x, p1.y);
+//            g.drawLine(p0.x + 1, p0.y + 1, p1.x + 1, p1.y + 1);
+//            g.drawLine(p0.x - 1, p0.y - 1, p1.x - 1, p1.y - 1);
+//            g.drawLine(p0.x + 2, p0.y + 2, p1.x + 2, p1.y + 2);
+//            g.drawLine(p0.x - 2, p0.y - 2, p1.x - 2, p1.y - 2);
+//        } else if (level == 2) {
+//            g.drawLine(p0.x, p0.y, p1.x, p1.y);
+//            g.drawLine(p0.x + 1, p0.y + 1, p1.x + 1, p1.y + 1);
+//            g.drawLine(p0.x - 1, p0.y - 1, p1.x - 1, p1.y - 1);
+//        } else {
         g.drawLine(p0.x, p0.y, p1.x, p1.y);
+//        }
     }
 
 }
