@@ -40,6 +40,7 @@ public class Recursion extends JPanel {
     int maxLevel = 13;
     int counter = 1;
     boolean init = true;
+    double v1Min = 0.3;
 
     public Recursion() {
         Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
@@ -60,7 +61,7 @@ public class Recursion extends JPanel {
             }
         });
     }
-    
+
     void run() {
         p0 = new Point(getWidth() / 2, getHeight() + 10);
         p1 = new Point(getWidth() / 2, getHeight() / 2 + 350);
@@ -68,8 +69,11 @@ public class Recursion extends JPanel {
 
     private void draw(Point p0, Point p1, int level, Graphics g1) {
         Graphics2D g = (Graphics2D) g1;
+        if (level > maxLevel - 1) {
+            v1Min = 0.42;
+        }
         if (level == maxLevel) {
-            g.setColor(Color.green);
+            g.setColor(new Color(0, 223, 0, 20));
         } else {
             g.setColor(Color.black);
         }
@@ -82,28 +86,29 @@ public class Recursion extends JPanel {
         if (level >= maxLevel) {
             return;
         }
-
-        Point a = P(p0, p1, 1 + Math.random(), 0.4 + 0.1 * (Math.random() - 0.8));
+        double V = v1Min + 0.1 * (Math.random() - 0.6);
+        if (level == 0) {
+            V = 0.2;
+        }
+        Point a = P(p0, p1, 1 + Math.random(), V);
 //        g.setColor(Color.blue);
 //        g.drawOval(a.x - 1, a.y - 1, 2, 2);
 //        g.setColor(Color.black);
         draw(p1, a, level + 1, g);
 
-        Point b = P(p0, p1, 1 + Math.random(), -0.4 + 0.1 * -(Math.random() - 0.8));
+        Point b = P(p0, p1, 1 + Math.random(), -V);
 //        Point c = P(p0, p1, 0.5, -0.4);
 //        g.setColor(Color.red);
 //        g.drawOval(b.x - 1, b.y - 1, 2, 2);
 //        g.setColor(Color.black);
         draw(p1, b, level + 1, g);
-        
 
-            //        Point c = P(p0, p1, 1.1 + Math.random(), 0.1*(Math.random() - 0.5));
+        //        Point c = P(p0, p1, 1.1 + Math.random(), 0.1*(Math.random() - 0.5));
 //        g.setColor(Color.green);
 //        g.drawOval(c.x - 1, c.y - 1, 2, 2);
 //        g.setColor(Color.black);
 //        draw(p1, c, level + 1, g);
 //        draw(a, c, g);
-        
     }
 
     public static Point P(Point p0, Point p1, double u, double v) {
@@ -151,7 +156,11 @@ public class Recursion extends JPanel {
         if (level == maxLevel) {
             int xPoints[] = {x0, x1, x2, x3, x4, x5, x0};
             int yPoints[] = {y0, y1, y2, y3, y4, y5, y0};
-            g.drawPolygon(xPoints, yPoints, xPoints.length);
+            Color col = g.getColor();
+            g.fillPolygon(xPoints, yPoints, xPoints.length);
+            g.setColor(new Color(0, 0, 0, 20));
+            g.drawLine(x0, y0, x3, y3);
+            g.setColor(col);
 //            g.drawOval(p0.x - 2, p0.y - 2, 6, 9);
         } else {
             g.drawLine(p0.x, p0.y, p1.x, p1.y);
