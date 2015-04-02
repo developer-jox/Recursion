@@ -25,6 +25,7 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.geom.Point2D;
+import java.util.Random;
 import javax.swing.JPanel;
 
 /**
@@ -71,7 +72,7 @@ public class Recursion extends JPanel {
 //        g.setColor(Color.black);
         draw(p1, a, level + 1, g);
 
-        Point b = P(p0, p1, 1 + Math.random(), -0.4 + 0.1 * (Math.random() - 0.6));
+        Point b = P(p0, p1, 1 + Math.random(), -0.4 + 0.1 * -(Math.random() - 0.6));
 //        Point c = P(p0, p1, 0.5, -0.4);
 //        g.setColor(Color.red);
 //        g.drawOval(b.x - 1, b.y - 1, 2, 2);
@@ -106,28 +107,31 @@ public class Recursion extends JPanel {
     }
 
     private void drawLine(Graphics g, Point p0, Point p1, int level) {
-//        if (level == 0) {
-//            g.setColor(Color.black);
-//            g.drawLine(p0.x, p0.y, p1.x, p1.y);
-//            g.drawLine(p0.x + 1, p0.y + 1, p1.x + 1, p1.y + 1);
-//            g.drawLine(p0.x + 2, p0.y + 2, p1.x + 2, p1.y + 2);
-//            g.drawLine(p0.x - 1, p0.y - 1, p1.x - 1, p1.y - 1);
-//            g.drawLine(p0.x - 2, p0.y - 2, p1.x - 2, p1.y - 2);
-//            g.drawLine(p0.x + 3, p0.y + 3, p1.x + 3, p1.y + 3);
-//            g.drawLine(p0.x - 3, p0.y - 3, p1.x - 3, p1.y - 3);
-//        } else if (level == 1) {
-//            g.drawLine(p0.x, p0.y, p1.x, p1.y);
-//            g.drawLine(p0.x + 1, p0.y + 1, p1.x + 1, p1.y + 1);
-//            g.drawLine(p0.x - 1, p0.y - 1, p1.x - 1, p1.y - 1);
-//            g.drawLine(p0.x + 2, p0.y + 2, p1.x + 2, p1.y + 2);
-//            g.drawLine(p0.x - 2, p0.y - 2, p1.x - 2, p1.y - 2);
-//        } else if (level == 2) {
-//            g.drawLine(p0.x, p0.y, p1.x, p1.y);
-//            g.drawLine(p0.x + 1, p0.y + 1, p1.x + 1, p1.y + 1);
-//            g.drawLine(p0.x - 1, p0.y - 1, p1.x - 1, p1.y - 1);
-//        } else {
-        g.drawLine(p0.x, p0.y, p1.x, p1.y);
-//        }
+        int x0 = p0.x, x1 = p0.x + 3, x2 = p0.x + 5, x3 = p0.x + 7, x4 = p0.x + 5, x5 = p0.x + 3;
+        int y0 = p0.y, y1 = p0.y - 2, y2 = p0.y - 2, y3 = p0.y, y4 = p0.y + 2, y5 = p0.y + 2;
+        Random rnd = new Random();
+        int test = rnd.nextInt(2);
+        if (test == 0) {
+            x1 -= 4;
+            x2 -= 8;
+            x3 -= 10;
+            x4 -= 8;
+            x5 -= 4;
+        } else if (test == 1) {
+            test = rnd.nextInt(10);
+            y1 += test;
+            y2 += test;
+            y4 -= test;
+            y5 -= test;
+        }
+        if (level == maxLevel) {
+            int xPoints[] = {x0, x1, x2, x3, x4, x5, x0};
+            int yPoints[] = {y0, y1, y2, y3, y4, y5, y0};
+            g.drawPolygon(xPoints, yPoints, xPoints.length);
+//            g.drawOval(p0.x - 2, p0.y - 2, 6, 9);
+        } else {
+            g.drawLine(p0.x, p0.y, p1.x, p1.y);
+        }
     }
 
 }
