@@ -24,18 +24,22 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
-import java.awt.geom.Point2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
  *
- * @author joaort192
+ * @author developer-jox <developer.jox@gmail.com>
  */
 public class Recursion extends JPanel {
 
     Point p0, p1;
-    int maxLevel = 15;
+    int maxLevel = 13;
+    int counter = 1;
+    boolean init = true;
 
     public Recursion() {
         Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
@@ -43,9 +47,20 @@ public class Recursion extends JPanel {
 //        setPreferredSize(new Dimension(700, 700));
         setSize(res.width, res.height - 79);
 //        setSize(700, 700);
+        JButton but = new JButton("New fractal");
+        add("North", but);
+        but.setBackground(Color.white);
         setDoubleBuffered(true);
-    }
+        but.addActionListener(new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                repaint();
+                counter += 2;
+            }
+        });
+    }
+    
     void run() {
         p0 = new Point(getWidth() / 2, getHeight() + 10);
         p1 = new Point(getWidth() / 2, getHeight() / 2 + 350);
@@ -59,6 +74,8 @@ public class Recursion extends JPanel {
             g.setColor(Color.black);
         }
         g.setStroke(new BasicStroke(Math.max(0.5f, maxLevel - level) / 6f));
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         drawLine(g, p0, p1, level);
 
 //        System.out.println("distance: " + p0.distance(p1));
@@ -66,25 +83,27 @@ public class Recursion extends JPanel {
             return;
         }
 
-        Point a = P(p0, p1, 1 + Math.random(), 0.4 + 0.1 * (Math.random() - 0.6));
+        Point a = P(p0, p1, 1 + Math.random(), 0.4 + 0.1 * (Math.random() - 0.8));
 //        g.setColor(Color.blue);
 //        g.drawOval(a.x - 1, a.y - 1, 2, 2);
 //        g.setColor(Color.black);
         draw(p1, a, level + 1, g);
 
-        Point b = P(p0, p1, 1 + Math.random(), -0.4 + 0.1 * -(Math.random() - 0.6));
+        Point b = P(p0, p1, 1 + Math.random(), -0.4 + 0.1 * -(Math.random() - 0.8));
 //        Point c = P(p0, p1, 0.5, -0.4);
 //        g.setColor(Color.red);
 //        g.drawOval(b.x - 1, b.y - 1, 2, 2);
 //        g.setColor(Color.black);
         draw(p1, b, level + 1, g);
+        
 
-//        Point c = P(p0, p1, 1.1 + Math.random(), 0.1*(Math.random() - 0.5));
+            //        Point c = P(p0, p1, 1.1 + Math.random(), 0.1*(Math.random() - 0.5));
 //        g.setColor(Color.green);
 //        g.drawOval(c.x - 1, c.y - 1, 2, 2);
 //        g.setColor(Color.black);
 //        draw(p1, c, level + 1, g);
 //        draw(a, c, g);
+        
     }
 
     public static Point P(Point p0, Point p1, double u, double v) {
@@ -96,14 +115,19 @@ public class Recursion extends JPanel {
 
     @Override
     public void paint(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setStroke(new BasicStroke(0.5f));
+        super.paint(g);
+//        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//        g2.setStroke(new BasicStroke(0.5f));
 
 //        g2.drawLine(0, getHeight() / 2, getWidth(), getHeight() / 2);
 //        g2.drawLine(getWidth() / 2, getHeight() / 2, getWidth() / 2, getHeight() / 2 + -100);
-        draw(p0, p1, 0, g);
-//        repaint();
+        if (counter % 2 == 0) {
+            draw(p0, p1, 0, g);
+        }
+        if (init) {
+            init = false;
+            counter++;
+        }
     }
 
     private void drawLine(Graphics g, Point p0, Point p1, int level) {
