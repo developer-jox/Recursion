@@ -37,7 +37,7 @@ import javax.swing.JPanel;
 public class Recursion extends JPanel {
 
     Point p0, p1;
-    int maxLevel = 13;
+    int maxLevel = 16;
     int counter = 1;
     boolean init = true;
     double v1Min = 0.3;
@@ -73,7 +73,7 @@ public class Recursion extends JPanel {
             v1Min = 0.42;
         }
         if (level == maxLevel) {
-            g.setColor(new Color(0, 223, 0, 20));
+            g.setColor(new Color(0, 223, 0, 40));
         } else {
             g.setColor(Color.black);
         }
@@ -87,28 +87,20 @@ public class Recursion extends JPanel {
             return;
         }
         double V = v1Min + 0.1 * (Math.random() - 0.6);
+        double U = 1 + Math.random();
         if (level == 0) {
             V = 0.2;
         }
-        Point a = P(p0, p1, 1 + Math.random(), V);
-//        g.setColor(Color.blue);
-//        g.drawOval(a.x - 1, a.y - 1, 2, 2);
-//        g.setColor(Color.black);
+//        if (level > maxLevel - 5) {
+//            V = Math.min(V, 0.7);
+//        }
+//        if (level > maxLevel - 5) {
+//            U = Math.max(U, 1);
+//        }
+        Point a = P(p0, p1, U, V);
         draw(p1, a, level + 1, g);
-
-        Point b = P(p0, p1, 1 + Math.random(), -V);
-//        Point c = P(p0, p1, 0.5, -0.4);
-//        g.setColor(Color.red);
-//        g.drawOval(b.x - 1, b.y - 1, 2, 2);
-//        g.setColor(Color.black);
+        Point b = P(p0, p1, U, -V);
         draw(p1, b, level + 1, g);
-
-        //        Point c = P(p0, p1, 1.1 + Math.random(), 0.1*(Math.random() - 0.5));
-//        g.setColor(Color.green);
-//        g.drawOval(c.x - 1, c.y - 1, 2, 2);
-//        g.setColor(Color.black);
-//        draw(p1, c, level + 1, g);
-//        draw(a, c, g);
     }
 
     public static Point P(Point p0, Point p1, double u, double v) {
@@ -147,7 +139,7 @@ public class Recursion extends JPanel {
             x4 -= 8;
             x5 -= 4;
         } else if (test == 1) {
-            test = rnd.nextInt(10);
+            test = rnd.nextInt(5);
             y1 += test;
             y2 += test;
             y4 -= test;
